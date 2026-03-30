@@ -1,0 +1,108 @@
+--  1. Liste os 5 funcionários com maior salário.
+SELECT *
+FROM Funcionarios
+ORDER BY salario DESC
+LIMIT 5;
+
+-- 2. Mostre os departamentos com mais de 3 funcionários.
+
+SELECT Funcionarios, COUNT *  AS ‘Total_Funcionarios’
+FROM departamento
+INNER JOIN  funcionario_id on departamento_id
+GROUP BY departamento_id
+HAVING COUNT * > 3;
+
+--  3. Liste os projetos com orçamento acima da média.
+
+SELECT * FROM Projetos
+WHERE orcamento . (SELECT AVG(orcamento) FROM Projetos);
+
+-- 4. Mostre as tarefas pendentes com nomes dos funcionários e projetos. 
+
+SELECT obrigacoes.DESCRICAO, tarefa.STATUS, Funcionarios.nome AS Funcionario
+FROM obrigacoes
+INNER JOIN Funcionarios ON obrigacoes.ID_FUNCIONARIO = Funcionarios.id
+WHERE obrigacoes.STATUS = 'Pendente';
+
+
+
+-- 5. Encontre os funcionários que não são 'Auxiliares' e ganham acima de R$ 4500. 
+
+
+SELECT *
+FROM Funcionarios
+WHERE CARGO != ‘Auxiliar’ AND salario > 4500;
+
+
+-- 6. Liste os nomes de funcionários com exatamente 4 letras usando LIKE com _.
+
+SELECT nome 
+FROM Funcionarios
+WHERE nome LIKE ‘_INA’; 
+
+
+-- 7. Exiba os funcionários com salário entre R$ 3500 e R$ 7000 e ordene por data de admissão.
+
+SELECT *
+FROM Funcionarios
+WHERE salario BETWEEN 3500 AND 7000
+ORDER BY data_admissao;
+
+-- 8. Liste os cargos únicos da empresa (sem repetições).
+
+SELECT DISTINCT cargo
+FROM Funcionarios:
+
+
+-- 9. Mostre a soma de salários por departamento.
+
+
+SELECT departamento_id, SUM (salario) AS total_salarios
+FROM Funcionarios
+GROUP BY departamento_id;
+
+
+
+-- 10. Apresente o nome do projeto, nome do cliente e valor do contrato usando JOIN.
+
+SELECT Proj.nome AS Projeto, Cli.nome AS cliente, Proj.valor_contrato
+FROM Projetos
+JOIN Clientes ON Proj.cliente_id = Cliente_id;
+
+
+-- 11. Encontre os funcionários cujo salário é maior que a média salarial do próprio departamento.
+
+SELECT  * FROM Funcionarios 
+WHERE salario > (
+SELECT AVG (salario > media) 
+FROM Funcionarios);;
+
+-- 12. Liste os nomes dos projetos com mais de duas tarefas associadas.
+
+SELECT Proj.nome
+FROM Projetos
+JOIN obrigacoes ON Proj_id = obr_id
+GROUP BY Proj.nome
+HAVING COUNT(obr_id) > 2;
+
+-- 13. Mostre todos os departamentos que não possuem funcionários associados (dica: LEFT JOIN).
+
+SELECT  Funcionarios.nome, Departamentos.nome AS DEPARTAMENTO
+FROM Funcionarios
+LEFT JOIN departamento ON Funcionario.departamento_id = Departamento.departamento_id  WHERE Funcionario_id IS NULL;
+
+-- 14. Crie uma consulta que mostre o nome dos funcionários, o nome do projeto e a descrição da tarefa atribuída a eles.
+
+SELECT func.nome AS Funcionario, proj.nome AS projeto, obg.descricao
+FROM Obrigacoes
+JOIN Funcionario ON obg.funcionario_id = funcionario_id
+JOIN projeto ON obg.projeto_id = projeto_id;
+
+
+-- 15. Liste os clientes que contrataram projetos com valor total acima de R$ 50.000.
+
+SELECT nome
+FROM Clientes
+JOIN Projetos ON Cliente_id = Proj.cliente_id
+GROUP BY nome
+HAVING SUM(Proj.valor) > 50000;
